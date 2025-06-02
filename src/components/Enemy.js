@@ -40,7 +40,7 @@ function defaultHitFeedback() {
     }, 150);
 }
 
-function JarvanIV(){
+export function JarvanIV(){
     const enemy = new THREE.Group();
     
     // 各部件尺寸
@@ -158,6 +158,10 @@ function JarvanIV(){
     enemyContainer.hair = hair;
     // 专属hitFeedback（可自定义）
     enemyContainer.hitFeedback = jarvanHitFeedback;
+
+    // 关键：记录初始z高度
+    enemyContainer.baseZ = enemyContainer.position.z;
+
     return enemyContainer;
 }
 
@@ -182,17 +186,16 @@ function jarvanHitFeedback() {
     this.hair.material.color.set('#F8750C');
 
     // 2. 弹跳动画（可复用原有代码）
-    const originalZ = this.position.z;
     let t = 0;
     const bounceHeight = 12;
     const bounceDuration = 0.25;
     const animateBounce = () => {
         t += 1/60 / bounceDuration;
-        this.position.z = originalZ + Math.abs(Math.sin(Math.PI * t)) * bounceHeight;
+        this.position.z = this.baseZ + Math.abs(Math.sin(Math.PI * t)) * bounceHeight;
         if (t < 1) {
             requestAnimationFrame(animateBounce);
         } else {
-            this.position.z = originalZ;
+            this.position.z = this.baseZ;
         }
     };
     animateBounce();

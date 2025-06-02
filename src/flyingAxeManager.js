@@ -4,6 +4,7 @@ import { metadata } from "./components/Map";
 import { player } from "./components/Player";
 import { minTileIndex, maxTileIndex, tilesize } from "./constants";
 import { addStarAtTile, addImageAtTile } from "./utilities/addTarget";
+import { sendMessage } from "./socket";
 
 export const flyingAxes = [];
 
@@ -75,7 +76,7 @@ export function updateFlyingAxes(scene) {
             if (!rowData) continue;
             if (rowData.fieldType === "EnemyField") {
                 const enemy = rowData.enemyRef;
-                if (enemy && enemy.collisionBox) {
+                if (enemy) {
                     const enemyBox = new THREE.Box3().setFromObject(enemy.collisionBox);
                     if (axeBox.intersectsBox(enemyBox)) {
                         hitEnemy = enemy;
@@ -103,6 +104,12 @@ export function updateFlyingAxes(scene) {
                         axe.targetMesh = null;
                         addImageAtTile(scene, playerRow, randomTile, targetZ, tilesize, (mesh) => {
                             axe.targetMesh = mesh;
+                        });
+                        console.log('hit enemy,enemy.id:', enemy.enemyId);
+                        sendMessage({
+                            type: 'enemy_hit',
+                            enemyId: enemy.enemyId,
+                            damage:20
                         });
                         break;
                     }

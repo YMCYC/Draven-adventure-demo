@@ -17,7 +17,7 @@ const fieldTypeToComponent = {
     EnemyField
 };
 
-export function initializeMap(templateName = "map1", enemyObj = null) {
+export function initializeMap(templateName = "map1") {
     // Select map template
     const template = fieldTemplates[templateName];
     metadata = generateMetadataFromTemplate(template);
@@ -28,23 +28,7 @@ export function initializeMap(templateName = "map1", enemyObj = null) {
 
     addRows();
 
-    // Place enemy at the center of the first BattleField row
-    if (enemyObj) {
-        const firstBattleRow = metadata.find(row => row.fieldType === "EnemyField");
-        if (firstBattleRow) {
-            firstBattleRow.enemyRef = enemyObj;
-            // Initialize enemy position here
-            if (typeof enemyObj.initialize === "function") {
-                enemyObj.initialize(firstBattleRow.rowIndex);
-            } else if (typeof enemyObj === "object" && typeof enemyObj.position === "object") {
-                // For legacy style
-                enemyObj.position.x = 0;
-                enemyObj.position.y = firstBattleRow.rowIndex * tilesize; // You can pass tilesize as needed
-                console.log(enemyObj.position.y);
-                enemyObj.position.z = 0;
-            }
-        }
-    }
+    // 不再处理 enemyObj，敌人由 WebSocket 事件和 EnemyManager 负责
 }
 
 export function addRows() {
