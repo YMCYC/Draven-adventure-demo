@@ -133,13 +133,6 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   font-size: 2.2rem;
-  color: #222;
-  background: #fff;
-  border: 2px solid #222;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .control-pad .center img {
@@ -175,6 +168,18 @@ button:focus-visible {
   width: 60%;
   height: 60%;
   object-fit: contain;
+}
+
+.control-pad .up span,
+.control-pad .down span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  font-size: 2.2rem;
+  line-height: 1;
+  padding-top: 2px;
 }
 
 @media (max-width: 400px) {
