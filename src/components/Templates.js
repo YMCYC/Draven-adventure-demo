@@ -8,8 +8,8 @@ export const enemyTemplates = {
 
 export const fieldTemplates = {
     map1: [
-        { fieldType: "PlayerField", length: 3 },
-        { fieldType: "BattleField", length: 5 },
+        { fieldType: "PlayerField", length: 2 },
+        { fieldType: "BattleField", length: 4 },
         { fieldType: "EnemyField", length: 2 }
     ],
     map2: [
