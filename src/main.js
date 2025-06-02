@@ -25,6 +25,10 @@ const camera = new Camera();
 player.add(camera);
 
 const renderer = new Renderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+camera.aspect = window.innerWidth / window.innerHeight;
+camera.updateProjectionMatrix();
 
 renderer.render(scene,camera);
 renderer.setAnimationLoop(animate);
@@ -55,4 +59,10 @@ function shootAxe() {
 
 window.addEventListener("shoot-bullet", () => {
     shootAxe();
+});
+
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 });
