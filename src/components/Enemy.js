@@ -7,6 +7,39 @@ export const position = {
     currentTile:0,
 }
 
+// 通用hitFeedback，enemyContainer会继承
+function defaultHitFeedback() {
+    // 变红
+    const originalColors = [];
+    this.traverse(child => {
+        if (child.isMesh && child.material && child.material.color) {
+            originalColors.push({ mesh: child, color: child.material.color.clone() });
+            child.material.color.set('#ff2222');
+        }
+    });
+    // 弹跳动画
+    const originalZ = this.position.z;
+    let t = 0;
+    const bounceHeight = 12;
+    const bounceDuration = 0.25; // 秒
+    const animateBounce = () => {
+        t += 1/60 / bounceDuration;
+        this.position.z = originalZ + Math.abs(Math.sin(Math.PI * t)) * bounceHeight;
+        if (t < 1) {
+            requestAnimationFrame(animateBounce);
+        } else {
+            this.position.z = originalZ;
+        }
+    };
+    animateBounce();
+    // 恢复颜色
+    setTimeout(() => {
+        originalColors.forEach(({ mesh, color }) => {
+            mesh.material.color.copy(color);
+        });
+    }, 150);
+}
+
 function JarvanIV(){
     const enemy = new THREE.Group();
     
@@ -117,8 +150,19 @@ function JarvanIV(){
     enemyContainer.add(enemy);
     enemyContainer.add(collisionBox);
     enemyContainer.collisionBox = collisionBox;
+    enemyContainer.body = body;
+    enemyContainer.head = head;
+    enemyContainer.shoulderLeft = shoulderLeft;
+    enemyContainer.shoulderRight = shoulderRight;
+    enemyContainer.hairBand = hairBand;
+    enemyContainer.hair = hair;
+    // 专属hitFeedback（可自定义）
+    enemyContainer.hitFeedback = jarvanHitFeedback;
     return enemyContainer;
 }
+
+// 给所有enemy默认加上hitFeedback
+THREE.Group.prototype.hitFeedback = defaultHitFeedback;
 
 export function initializeJarvan(rowIndex = 0) {
     position.currentRow = rowIndex;
@@ -127,3 +171,41 @@ export function initializeJarvan(rowIndex = 0) {
     jarvan.position.y = position.currentRow * tilesize;
     jarvan.position.z = 0;
 }
+
+function jarvanHitFeedback() {
+    // 1. 变红
+    this.body.material.color.set('#BB3015');
+    this.head.material.color.set('#F96D4F');
+    this.shoulderLeft.material.color.set('#F07029');
+    this.shoulderRight.material.color.set('#F07029');
+    this.hairBand.material.color.set('#F8750C');
+    this.hair.material.color.set('#F8750C');
+
+    // 2. 弹跳动画（可复用原有代码）
+    const originalZ = this.position.z;
+    let t = 0;
+    const bounceHeight = 12;
+    const bounceDuration = 0.25;
+    const animateBounce = () => {
+        t += 1/60 / bounceDuration;
+        this.position.z = originalZ + Math.abs(Math.sin(Math.PI * t)) * bounceHeight;
+        if (t < 1) {
+            requestAnimationFrame(animateBounce);
+        } else {
+            this.position.z = originalZ;
+        }
+    };
+    animateBounce();
+
+    // 3. 恢复颜色
+    setTimeout(() => {
+        this.body.material.color.set('#77612A');
+        this.head.material.color.set('#F3DB9E');
+        this.shoulderLeft.material.color.set('#E0E052');
+        this.shoulderRight.material.color.set('#E0E052');
+        this.hairBand.material.color.set('#F0EB18');
+        this.hair.material.color.set('#EFEA11');
+    }, 150);
+}
+
+

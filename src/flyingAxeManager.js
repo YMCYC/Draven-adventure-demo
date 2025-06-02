@@ -79,6 +79,10 @@ export function updateFlyingAxes(scene) {
                     const enemyBox = new THREE.Box3().setFromObject(enemy.collisionBox);
                     if (axeBox.intersectsBox(enemyBox)) {
                         hitEnemy = enemy;
+                        // ÊÜ»÷·´À¡
+                        if (typeof enemy.hitFeedback === 'function') {
+                            enemy.hitFeedback();
+                        }
                         // Axe hit enemy, set return
                         const playerRow = Math.round(player.position.y / tilesize);
                         const playerTile = Math.round(player.position.x / tilesize);
