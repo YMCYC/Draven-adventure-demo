@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <canvas class="game"></canvas>
+    <div class="control-pad">
+      <div class="row">
+        <div class="cell"></div>
+        <div class="cell up" id="forward"><span>▲</span></div>
+        <div class="cell"></div>
+      </div>
+      <div class="row">
+        <div class="cell left" id="left"><span>◀</span></div>
+        <div class="cell center" id="throw-axe">
+          <img src="/assets/axe_land_noBG3.png" alt="axe" />
+        </div>
+        <div class="cell right" id="right"><span>▶</span></div>
+      </div>
+      <div class="row">
+        <div class="cell"></div>
+        <div class="cell down" id="backward"><span>▼</span></div>
+        <div class="cell"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
